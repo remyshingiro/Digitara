@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-bg: #0A0F1E;
+  --color-surface: #111827;
+  --color-accent-cyan: #00D4FF;
+  --color-accent-amber: #FFB347;
+  --color-border-subtle: #1F2937;
+  --color-text-primary: #E2E8F0;
+  --color-text-secondary: #94A3B8;
+
+  --font-clash: "Clash Display", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+}
+
+:root {
+  background-color: var(--color-dark-bg);
+  color: var(--color-text-primary);
+}
+
+/* Glassmorphism Utility */
+.glass {
+  background: rgba(17, 24, 37, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-subtle);
+}
