@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor"; // Import your new component
+import CustomCursor from "@/components/CustomCursor";
+import SmoothScroll from "@/components/SmoothScroll"; // Import Lenis Provider
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,14 +38,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* 'md:cursor-none' hides the system cursor on desktop to let our custom one shine. 
-          We keep it default on mobile (pointer: coarse) for accessibility.
-      */}
       <body className="bg-darkBg text-textPrimary antialiased selection:bg-accentCyan selection:text-darkBg md:cursor-none">
-        <CustomCursor />
-        <Navbar />
-        {children}
-        <Footer />
+        {/* Wrap everything in SmoothScroll for the inertia effect */}
+        <SmoothScroll>
+          <CustomCursor />
+          <Navbar />
+          {children}
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

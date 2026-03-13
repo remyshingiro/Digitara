@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation"; // Added for active state tracking
 import { Menu, X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,8 +15,8 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname(); // Get current URL path
 
-  // Change background on scroll
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -40,20 +41,30 @@ export default function Navbar() {
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-10">
           <div className="flex items-center gap-8 text-sm font-medium">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className="text-text-secondary hover:text-accent-cyan transition-colors relative group"
-              >
-                {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent-cyan transition-all group-hover:w-full" />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link 
+                  key={link.name} 
+                  href={link.href} 
+                  className={cn(
+                    "transition-colors relative group",
+                    isActive ? "text-accent-cyan" : "text-text-secondary hover:text-accent-cyan"
+                  )}
+                >
+                  {link.name}
+                  {/* Underline logic: full width if active, animate-in on hover if not */}
+                  <span className={cn(
+                    "absolute -bottom-1 left-0 h-[1px] bg-accent-cyan transition-all duration-300",
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  )} />
+                </Link>
+              );
+            })}
           </div>
           
           <Link href="/contact">
-            <button className="bg-accent-cyan text-dark-bg px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:brightness-110 hover:gap-3 transition-all">
+            <button className="bg-accent-cyan text-dark-bg px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:brightness-110 hover:gap-3 transition-all active:scale-95">
               Get Quote
               <ArrowRight size={16} />
             </button>
@@ -61,26 +72,36 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-text-primary" onClick={() => setIsOpen(!isOpen)}>
+        <button 
+          className="md:hidden text-text-primary p-2" 
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Menu"
+        >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="absolute top-20 left-6 right-6 glass border border-white/10 p-8 rounded-3xl flex flex-col gap-6 md:hidden animate-in fade-in zoom-in duration-300">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.href} 
-              onClick={() => setIsOpen(false)} 
-              className="text-2xl font-bold font-clash text-text-primary hover:text-accent-cyan transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
+        <div className="absolute top-24 left-6 right-6 glass border border-white/10 p-8 rounded-3xl flex flex-col gap-6 md:hidden animate-in fade-in zoom-in duration-300">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                onClick={() => setIsOpen(false)} 
+                className={cn(
+                  "text-2xl font-bold font-clash transition-colors",
+                  isActive ? "text-accent-cyan" : "text-text-primary hover:text-accent-cyan"
+                )}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
           <Link href="/contact" onClick={() => setIsOpen(false)}>
-            <button className="w-full bg-accent-cyan text-dark-bg py-4 rounded-xl font-bold text-lg mt-4">
+            <button className="w-full bg-accent-cyan text-dark-bg py-4 rounded-xl font-bold text-lg mt-4 shadow-lg shadow-accent-cyan/20">
               Start Your Project
             </button>
           </Link>
