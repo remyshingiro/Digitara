@@ -7,12 +7,14 @@ const testimonials = [
     quote: "Digitara transformed our vision into a high-performance reality. Their expertise in Next.js is unmatched.",
     name: "Alex Munyaneza",
     role: "CEO, AgriTech Solutions",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex", // Swap with real image path
     stars: 5,
   },
   {
     quote: "The team delivered a world-class e-commerce platform that doubled our conversion rate in three months.",
     name: "Sarah Chen",
     role: "Founder, SwimShop",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah", // Swap with real image path
     stars: 5,
   },
 ];
@@ -44,7 +46,14 @@ export default function Testimonials() {
               </p>
 
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-accentCyan/20 border border-accentCyan/30" />
+                {/* 🚀 Updated from empty div to img tag */}
+                <div className="w-12 h-12 rounded-full overflow-hidden border border-accentCyan/30">
+                  <img 
+                    src={t.image} 
+                    alt={t.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h4 className="font-bold text-textPrimary">{t.name}</h4>
                   <p className="text-sm text-textSecondary">{t.role}</p>

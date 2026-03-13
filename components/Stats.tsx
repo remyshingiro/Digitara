@@ -11,10 +11,34 @@ const stats = [
 export default function Stats() {
   return (
     <section className="py-20 lg:py-32 relative overflow-hidden">
-      <div className="max-w-[1200px] mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      {/* ADDED: grid-cols-1 for mobile, items-center stays */}
+      <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         
-        {/* Left Side: Stats Grid */}
-        <div className="grid grid-cols-2 gap-4 md:gap-8">
+        {/* Right Side (Text) - Moved to top on mobile using order-1 */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="order-1 lg:order-2" 
+        >
+          <h2 className="text-3xl md:text-5xl font-bold font-clash text-text-primary mb-6">
+            Why Choose <span className="text-accent-cyan">Digitara</span>?
+          </h2>
+          <p className="text-lg text-text-secondary font-jakarta leading-relaxed">
+            We don't just write code; we build digital assets. Our approach combines 
+            modern technology with a deep understanding of business transformation. 
+            From startups in Rwanda to corporate clients globally, we deliver 
+            excellence at every pixel.
+          </p>
+          <div className="mt-8">
+             <button className="text-accent-cyan font-bold flex items-center gap-2 hover:gap-4 transition-all">
+                Learn more about our mission <span>→</span>
+             </button>
+          </div>
+        </motion.div>
+
+        {/* Left Side (Stats Grid) - order-2 for mobile */}
+        <div className="grid grid-cols-2 gap-4 md:gap-8 order-2 lg:order-1">
           {stats.map((stat, index) => (
             <motion.div 
               key={index}
@@ -33,27 +57,6 @@ export default function Stats() {
           ))}
         </div>
 
-        {/* Right Side: Value Prop */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-3xl md:text-5xl font-bold font-clash text-text-primary mb-6">
-            Why Choose <span className="text-accent-cyan">Digitara</span>?
-          </h2>
-          <p className="text-lg text-text-secondary font-jakarta leading-relaxed">
-            We don't just write code; we build digital assets. Our approach combines 
-            modern technology with a deep understanding of business transformation. 
-            From startups in Rwanda to corporate clients globally, we deliver 
-            excellence at every pixel.
-          </p>
-          <div className="mt-8">
-             <button className="text-accent-cyan font-bold flex items-center gap-2 hover:gap-4 transition-all">
-                Learn more about our mission <span>→</span>
-             </button>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
