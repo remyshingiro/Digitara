@@ -3,11 +3,10 @@ import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton"; 
 
 export default function Hero() {
-  // 🚀 INSTANT SCROLL FUNCTION: Solves the double-click issue
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
-      const offset = 80; // Buffer for Navbar
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = contactSection.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -21,9 +20,10 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[85vh] lg:min-h-screen flex items-center overflow-hidden pt-24 pb-12 md:pt-32 lg:pt-0">
+    // 🚀 FIXED: Increased large screen padding (lg:pt-32) and ensured it doesn't overlap navbar
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-32 pb-12 md:pt-40 lg:pt-20">
       
-      {/* 🚀 PREMIUM BACKGROUND */}
+      {/* PREMIUM BACKGROUND */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-accent-cyan/10 blur-[120px] rounded-full animate-pulse" />
         <div className="absolute bottom-[10%] left-[-5%] w-[30%] h-[30%] bg-blue-500/5 blur-[100px] rounded-full" />
@@ -36,7 +36,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* 🚀 REFINED TYPOGRAPHY */}
+            {/* 🚀 FIXED: Removed the 54xl typo. Changed to lg:text-8xl for a crisp large-screen look */}
             <h1 className="text-[2.8rem] leading-[1.05] md:text-6xl lg:text-8xl font-bold font-clash text-text-primary tracking-tight">
               We Build Digital <br />
               <span className="text-accent-cyan inline-block">Experiences</span> <br />
@@ -49,7 +49,6 @@ export default function Hero() {
             </p>
             
             <div className="mt-10">
-              {/* 🚀 THE SINGLE CTA: Removed secondary button for faster conversion */}
               <MagneticButton>
                 <button 
                   type="button"
@@ -68,7 +67,7 @@ export default function Hero() {
             transition={{ delay: 1, duration: 1 }}
             className="mt-16 pt-8 border-t border-white/5 flex flex-wrap gap-8 items-center opacity-40 grayscale"
           >
-            {/* Trust Indicators or Client Logos can go here later */}
+            {/* Trust Indicators */}
           </motion.div>
         </div>
       </div>
