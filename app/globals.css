@@ -13,14 +13,30 @@
   --font-jakarta: "Plus Jakarta Sans", sans-serif;
 }
 
+/* 1. Global Reset - Moved OUTSIDE @layer for higher specificity */
+@media (min-width: 768px) {
+  html, body, a, button, input, select, textarea, * {
+    cursor: none !important;
+  }
+}
+
 :root {
   background-color: var(--color-dark-bg);
   color: var(--color-text-primary);
+  /* Ensure smooth transitions for any theme-aware elements */
+  transition: background-color 0.3s ease;
 }
 
-/* Glassmorphism Utility */
+/* 2. Glassmorphism Utility */
 .glass {
   background: rgba(17, 24, 37, 0.6);
   backdrop-filter: blur(12px);
   border: 1px solid var(--color-border-subtle);
+}
+
+/* 3. Improved Glow Utility */
+.custom-cursor-glow {
+  filter: blur(10px);
+  background: radial-gradient(circle, #00D4FF 0%, transparent 70%);
+  opacity: 0.4;
 }
