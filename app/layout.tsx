@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll"; 
-import { ThemeProvider } from "@/components/ThemeProvider"; // 🚀 Added this
+import { ThemeProvider } from "@/components/ThemeProvider"; 
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,11 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // 🚀 CRITICAL: Added suppressHydrationWarning to stop the "flicker" error
+    // suppressHydrationWarning is essential when using next-themes to prevent server/client mismatch
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-dark-bg text-text-primary antialiased selection:bg-accent-cyan selection:text-dark-bg md:cursor-none transition-colors duration-300">
+      <body className="bg-dark-bg text-text-primary antialiased selection:bg-accent-cyan selection:text-dark-bg md:cursor-none transition-colors duration-500">
         
-        {/* 🚀 THE FIX: ThemeProvider must wrap everything */}
         <ThemeProvider 
           attribute="class" 
           defaultTheme="dark" 
@@ -45,7 +44,10 @@ export default function RootLayout({
           <SmoothScroll>
             <CustomCursor />
             <Navbar />
-            <main>{children}</main>
+            {/* main tag ensures proper spacing and accessibility for your page content */}
+            <main className="min-h-screen">
+              {children}
+            </main>
             <Footer />
           </SmoothScroll>
         </ThemeProvider>

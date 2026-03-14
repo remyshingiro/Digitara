@@ -3,6 +3,7 @@ import { Check, X, ArrowRight, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Script from "next/script";
+import React, { useState, useEffect } from "react";
 
 const plans = [
   {
@@ -19,7 +20,7 @@ const plans = [
       { text: "E-commerce Integration", included: false },
       { text: "Admin Dashboard", included: false },
     ],
-    accent: "text-[#00D4FF]",
+    accent: "text-accent-cyan",
     badge: "Active",
   },
   {
@@ -54,12 +55,18 @@ const plans = [
       { text: "API Integrations", included: true },
       { text: "Dedicated Manager", included: true },
     ],
-    accent: "text-[#FF8A00]",
+    accent: "text-accent-amber",
     badge: "Popular",
   },
 ];
 
 export default function PricingPage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleConsultClick = () => {
     const element = document.getElementById("contact");
     if (element) {
@@ -69,7 +76,6 @@ export default function PricingPage() {
     }
   };
 
-  // 🚀 SEO: Structured Data for Google
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -85,7 +91,7 @@ export default function PricingPage() {
   };
 
   return (
-    <main className="bg-dark-bg min-h-screen pt-32 pb-20 overflow-x-hidden">
+    <main className="bg-dark-bg min-h-screen pt-32 pb-20 overflow-x-hidden transition-colors duration-500">
       <Script
         id="pricing-schema"
         type="application/ld+json"
@@ -94,39 +100,41 @@ export default function PricingPage() {
 
       <div className="max-w-[1100px] mx-auto px-6">
         {/* Header Section */}
-        <div className="text-center mb-20">
-          <motion.h1 
+        <div className="text-center mb-24">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-bold font-clash text-white tracking-tight mb-6"
           >
-            Invest in <span className="text-accent-cyan italic">Growth.</span>
-          </motion.h1>
-          <p className="text-white/40 max-w-xl mx-auto font-jakarta">
-            Transparent, high-performance development tiers designed to scale your vision from Rwanda to the world.
-          </p>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-clash text-text-primary tracking-tight mb-8">
+              Invest in <span className="text-accent-cyan italic">Growth.</span>
+            </h1>
+            <p className="text-text-secondary max-w-xl mx-auto font-jakarta font-medium opacity-80 text-lg">
+              Transparent, high-performance development tiers designed to scale your vision from Rwanda to the world stage.
+            </p>
+          </motion.div>
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mb-32">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
               className={cn(
                 "relative flex flex-col p-8 rounded-[2.5rem] border transition-all duration-500",
+                "bg-white/40 dark:bg-surface/30",
                 plan.highlight 
-                  ? "bg-white/[0.03] border-white/10 shadow-2xl scale-[1.05] z-10" 
-                  : "bg-transparent border-white/5 hover:border-white/10"
+                  ? "border-accent-cyan/40 shadow-2xl scale-[1.05] z-10 shadow-black/5 dark:shadow-none" 
+                  : "border-border-subtle shadow-xl shadow-black/5 dark:shadow-none"
               )}
             >
               <div className="flex justify-between items-center mb-8">
-                <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-white/30">Tier {index + 1}</span>
+                <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-text-secondary opacity-50">Tier {index + 1}</span>
                 <div className="relative">
-                  <div className={cn("absolute inset-0 blur-md opacity-20", plan.accent.replace('text-', 'bg-'))} />
-                  <div className="relative px-3 py-1 rounded-full border border-white/10 bg-white/5">
+                  <div className="relative px-3 py-1 rounded-full border border-border-subtle bg-surface/5">
                     <span className={cn("text-[10px] font-bold uppercase tracking-wider", plan.accent)}>
                       {plan.badge}
                     </span>
@@ -134,27 +142,31 @@ export default function PricingPage() {
                 </div>
               </div>
               
-              <h3 className="text-2xl font-bold font-clash text-white mb-2">{plan.name}</h3>
+              <h3 className="text-2xl font-bold font-clash text-text-primary mb-2 tracking-tight">{plan.name}</h3>
               <div className="mb-6">
-                <span className="text-[12px] text-white/20 line-through block mb-1">{plan.oldPrice}</span>
-                <span className="text-4xl font-bold text-white tracking-tighter">{plan.price}</span>
+                <span className="text-[12px] text-text-secondary/40 line-through block mb-1">{plan.oldPrice}</span>
+                <span className="text-4xl font-bold text-text-primary tracking-tighter">{plan.price}</span>
               </div>
 
-              <p className="text-sm text-white/40 mb-8 leading-relaxed font-jakarta">
+              <p className="text-sm text-text-secondary mb-10 leading-relaxed font-jakarta font-medium opacity-80">
                 {plan.desc}
               </p>
 
-              <div className="space-y-4 mb-10 flex-grow">
+              <div className="space-y-4 mb-12 flex-grow">
                 {plan.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-center gap-3">
+                  <div key={idx} className="flex items-center gap-4">
                     {feature.included ? (
-                      <Check size={16} className={cn("flex-shrink-0", plan.accent)} />
+                      <div className={cn("p-1 rounded-full bg-current/10", plan.accent)}>
+                         <Check size={12} className="stroke-[3]" />
+                      </div>
                     ) : (
-                      <X size={16} className="flex-shrink-0 text-white/10" />
+                      <div className="p-1 rounded-full bg-text-secondary/10">
+                        <X size={12} className="text-text-secondary/30" />
+                      </div>
                     )}
                     <span className={cn(
-                      "text-[12px] font-jakarta",
-                      feature.included ? "text-white/70" : "text-white/20"
+                      "text-[12px] font-jakarta font-medium",
+                      feature.included ? "text-text-primary/90" : "text-text-secondary/30"
                     )}>
                       {feature.text}
                     </span>
@@ -165,10 +177,10 @@ export default function PricingPage() {
               <button 
                 onClick={handleConsultClick}
                 className={cn(
-                  "group w-full py-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 border active:scale-95",
+                  "group w-full py-5 rounded-2xl font-bold text-[13px] transition-all flex items-center justify-center gap-2 border cursor-pointer active:scale-95 uppercase tracking-widest",
                   plan.highlight 
-                    ? "bg-white text-black border-white" 
-                    : "bg-transparent text-white border-white/10 hover:bg-white/5"
+                    ? "bg-accent-cyan text-black border-accent-cyan shadow-lg shadow-accent-cyan/20" 
+                    : "bg-transparent text-text-primary border-border-subtle hover:bg-surface/50"
                 )}
               >
                 Secure Your Spot
@@ -178,24 +190,27 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* 🚀 ADDED: FAQ Section for Founders (SEO & Trust) */}
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-clash text-white mb-4">Founder's <span className="text-accent-cyan">FAQ</span></h2>
-            <p className="text-white/40 text-sm italic">Clear answers for decisive leaders.</p>
+        {/* 🚀 FAQ Section for Founders */}
+        <div className="max-w-3xl mx-auto pb-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold font-clash text-text-primary mb-4 tracking-tight">Founder's <span className="text-accent-cyan italic">FAQ</span></h2>
+            <p className="text-text-secondary text-sm font-medium opacity-60">Clear answers for decisive regional leaders.</p>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-6">
             {[
               { q: "How fast is delivery?", a: "Starter projects typically launch in 2-3 weeks. Professional apps range from 6-10 weeks depending on complexity." },
               { q: "Do I own the code?", a: "100%. Upon final payment, all intellectual property and source code are transferred to your company." },
-              { q: "Can we scale later?", a: "Yes. Every line of code we write is built with scalability in mind using modular Next.js architecture." }
+              { q: "Can we scale later?", a: "Yes. Every line of code we write is built with scalability in mind using modular architecture and Go backends." }
             ].map((faq, i) => (
-              <div key={i} className="glass p-6 rounded-2xl border border-white/5">
-                <h4 className="text-white font-bold mb-2 flex items-center gap-2">
-                  <HelpCircle size={18} className="text-accent-cyan" /> {faq.q}
+              <div key={i} className={cn(
+                "glass p-8 rounded-[2rem] border transition-all duration-300",
+                "bg-white/40 dark:bg-surface/30 border-border-subtle"
+              )}>
+                <h4 className="text-text-primary font-bold mb-4 flex items-center gap-3 text-lg tracking-tight">
+                  <HelpCircle size={22} className="text-accent-cyan" /> {faq.q}
                 </h4>
-                <p className="text-white/50 text-sm leading-relaxed">{faq.a}</p>
+                <p className="text-text-secondary text-base leading-relaxed font-medium opacity-90">{faq.a}</p>
               </div>
             ))}
           </div>
