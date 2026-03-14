@@ -1,63 +1,83 @@
 @import "tailwindcss";
 
-@theme {
-  --color-dark-bg: #0A0F1E;
-  --color-surface: #111827;
+:root {
+  /* 🌑 DEFAULT: Dark Mode (Soft Premium Dark) */
+  --digitara-bg: #0A0F1E;
+  --digitara-surface: #111827;
+  --digitara-text-primary: #E2E8F0;
+  --digitara-text-secondary: #94A3B8;
+  --digitara-border: rgba(255, 255, 255, 0.08);
+  --digitara-glass: rgba(17, 24, 37, 0.6);
+  --digitara-shadow: transparent;
+  
   --color-accent-cyan: #00D4FF;
   --color-accent-amber: #FFB347;
-  --color-border-subtle: #1F2937;
-  --color-text-primary: #E2E8F0;
-  --color-text-secondary: #94A3B8;
+}
+
+/* 🚀 UPDATED: Light Mode (Muted Brightness & Soft Depth) */
+.light {
+  /* Fixed: Switched from blinding white to soft slate-grey */
+  --digitara-bg: #F1F5F9;         
+  /* Fixed: Off-white cards to reduce eye strain */
+  --digitara-surface: #FDFDFD;    
+  /* Fixed: Deep Navy-Slate for text (softer than black) */
+  --digitara-text-primary: #1E293B;   
+  /* Fixed: Muted Slate for secondary text */
+  --digitara-text-secondary: #64748B; 
+  /* Fixed: More organic, softer border */
+  --digitara-border: rgba(15, 23, 42, 0.06); 
+  /* Fixed: Increased opacity for glass readability on light bg */
+  --digitara-glass: rgba(255, 255, 255, 0.9); 
+  /* Fixed: Wider, softer shadow for a "feathered" edge look */
+  --digitara-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.06); 
+}
+
+@theme {
+  --color-dark-bg: var(--digitara-bg);
+  --color-surface: var(--digitara-surface);
+  --color-text-primary: var(--digitara-text-primary);
+  --color-text-secondary: var(--digitara-text-secondary);
+  --color-border-subtle: var(--digitara-border);
+  
+  --color-accent-cyan: #00D4FF;
+  --color-accent-amber: #FFB347;
 
   --font-clash: "Clash Display", sans-serif;
   --font-jakarta: "Plus Jakarta Sans", sans-serif;
 }
 
-/* 1. Global Reset - Moved OUTSIDE @layer for higher specificity */
+/* 1. Global Reset */
+html, body {
+  background-color: var(--digitara-bg);
+  color: var(--digitara-text-primary);
+  transition: background-color 0.4s ease, color 0.4s ease;
+  min-height: 100vh;
+}
+
 @media (min-width: 768px) {
   html, body, a, button, input, select, textarea, * {
     cursor: none !important;
   }
 }
 
-:root {
-  background-color: var(--color-dark-bg);
-  color: var(--color-text-primary);
-  /* Ensure smooth transitions for any theme-aware elements */
-  transition: background-color 0.3s ease;
-}
-
-/* 2. Glassmorphism Utility */
+/* 2. Glassmorphism Utility (Updated with dynamic shadow) */
 .glass {
-  background: rgba(17, 24, 37, 0.6);
+  background: var(--digitara-glass);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--digitara-border);
+  box-shadow: var(--digitara-shadow);
 }
 
 /* 3. Improved Glow Utility */
 .custom-cursor-glow {
   filter: blur(10px);
-  background: radial-gradient(circle, #00D4FF 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-accent-cyan) 0%, transparent 70%);
   opacity: 0.4;
 }
 
-
-html.lenis {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
+/* Lenis Smooth Scroll Logic */
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }

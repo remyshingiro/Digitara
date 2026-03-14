@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton"; 
+import { cn } from "@/lib/utils";
 
 export default function Hero() {
   const scrollToContact = () => {
@@ -20,13 +21,26 @@ export default function Hero() {
   };
 
   return (
-    // 🚀 FIXED: Increased large screen padding (lg:pt-32) and ensured it doesn't overlap navbar
     <section className="relative min-h-screen flex items-center overflow-hidden pt-32 pb-12 md:pt-40 lg:pt-20">
       
-      {/* PREMIUM BACKGROUND */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[10%] right-[-5%] w-[40%] h-[40%] bg-accent-cyan/10 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-[10%] left-[-5%] w-[30%] h-[30%] bg-blue-500/5 blur-[100px] rounded-full" />
+      {/* 🚀 DYNAMIC AURORA BACKGROUND: Optimized for Light & Dark Mode */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Top Right Glow - Cyan wash */}
+        <div className={cn(
+          "absolute top-[10%] right-[-5%] w-[40%] h-[40%] blur-[120px] rounded-full animate-pulse transition-colors duration-700",
+          "bg-accent-cyan/10 dark:bg-accent-cyan/15", 
+          "light:bg-accent-cyan/20"
+        )} />
+
+        {/* Bottom Left Glow - Sky Blue wash */}
+        <div className={cn(
+          "absolute bottom-[10%] left-[-5%] w-[30%] h-[30%] blur-[100px] rounded-full transition-colors duration-700",
+          "bg-blue-500/5 dark:bg-blue-600/5",
+          "light:bg-blue-400/10"
+        )} />
+
+        {/* Center-Left Glow - Soft Amber wash (Light Mode Exclusive) */}
+        <div className="absolute top-[20%] left-[10%] w-[25%] h-[25%] bg-accent-amber/10 blur-[100px] rounded-full opacity-0 light:opacity-100 transition-opacity duration-700" />
       </div>
 
       <div className="max-w-[1200px] mx-auto px-6 relative z-10 w-full">
@@ -36,14 +50,13 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* 🚀 FIXED: Removed the 54xl typo. Changed to lg:text-8xl for a crisp large-screen look */}
             <h1 className="text-[2.8rem] leading-[1.05] md:text-6xl lg:text-8xl font-bold font-clash text-text-primary tracking-tight">
               We Build Digital <br />
-              <span className="text-accent-cyan inline-block">Experiences</span> <br />
+              <span className="text-accent-cyan inline-block italic">Experiences</span> <br />
               That Convert
             </h1>
             
-            <p className="mt-6 md:mt-8 text-base md:text-lg lg:text-xl text-text-secondary max-w-md lg:max-w-xl font-jakarta leading-relaxed opacity-70">
+            <p className="mt-6 md:mt-8 text-base md:text-lg lg:text-xl text-text-secondary max-w-md lg:max-w-xl font-jakarta leading-relaxed opacity-80">
               Digitara is a premium digital agency in Rwanda. We craft high-performance 
               interfaces for startups ready to scale their global vision.
             </p>
@@ -61,13 +74,14 @@ export default function Hero() {
             </div>
           </motion.div>
 
+          {/* Trust Indicators Divider */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 1 }}
-            className="mt-16 pt-8 border-t border-white/5 flex flex-wrap gap-8 items-center opacity-40 grayscale"
+            className="mt-16 pt-8 border-t border-border-subtle flex flex-wrap gap-8 items-center opacity-40 grayscale"
           >
-            {/* Trust Indicators */}
+            {/* Trust Indicators can be added here */}
           </motion.div>
         </div>
       </div>

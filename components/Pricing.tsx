@@ -17,7 +17,7 @@ const plans = [
       { text: "E-commerce Integration", included: false },
       { text: "Admin Dashboard", included: false },
     ],
-    accent: "text-[#00D4FF]",
+    accent: "text-accent-cyan",
     badge: "Active",
   },
   {
@@ -50,35 +50,30 @@ const plans = [
       { text: "API Integrations", included: true },
       { text: "Dedicated Manager", included: true },
     ],
-    accent: "text-[#FF8A00]",
+    accent: "text-accent-amber",
     badge: "Popular",
   },
 ];
 
 export default function Pricing() {
-  // 🚀 HARD-FIXED SCROLL: Using native element selection
   const handleConsultClick = () => {
     const element = document.getElementById("contact");
     if (element) {
-      const offset = 80; // Account for a sticky header if you have one
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
       const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
   };
 
   return (
-    <section id="pricing" className="py-20 px-6 relative">
+    <section id="pricing" className="py-24 px-6 relative transition-colors duration-500">
       <div className="max-w-[1100px] mx-auto">
-        <div className="mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold font-clash text-white tracking-tight">
-            Pricing <span className="opacity-40 italic">Plans</span>
+        <div className="mb-16">
+          <h2 className="text-4xl md:text-6xl font-bold font-clash text-text-primary tracking-tight">
+            Pricing <span className="opacity-30 italic">Plans</span>
           </h2>
         </div>
 
@@ -90,18 +85,19 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className={cn(
-                "relative flex flex-col p-7 rounded-[2rem] border transition-all duration-500",
+                "relative flex flex-col p-8 rounded-[2.5rem] border transition-all duration-500",
+                "bg-white/40 dark:bg-surface/30",
+                "box-shadow-2xl shadow-black/5 dark:shadow-none",
                 plan.highlight 
-                  ? "bg-white/[0.03] border-white/10 shadow-2xl scale-[1.02] z-10" 
-                  : "bg-transparent border-white/5 hover:border-white/10"
+                  ? "border-accent-cyan/30 scale-[1.02] z-10 ring-1 ring-accent-cyan/10" 
+                  : "border-border-subtle"
               )}
             >
               {/* Badge Wrapper */}
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-[13px] font-bold text-red-400 uppercase tracking-[0.2em] opacity-">Tier {index + 1}</span>
-                <div className="relative group">
-                  <div className={cn("absolute inset-0 blur-md opacity-20", plan.accent.replace('text-', 'bg-'))} />
-                  <div className="relative px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+              <div className="flex justify-between items-center mb-8">
+                <span className="text-[11px] font-bold text-red-500/80 dark:text-red-400 uppercase tracking-[0.2em]">Tier {index + 1}</span>
+                <div className="relative">
+                  <div className="relative px-3 py-1 rounded-full border border-border-subtle bg-surface/5 backdrop-blur-md">
                     <span className={cn("text-[10px] font-bold uppercase tracking-wider", plan.accent)}>
                       {plan.badge}
                     </span>
@@ -110,28 +106,32 @@ export default function Pricing() {
               </div>
               
               <div className="relative z-10">
-                <h3 className="text-xl font-bold font-clash text-white mb-4">{plan.name}</h3>
+                <h3 className="text-2xl font-bold font-clash text-text-primary mb-4">{plan.name}</h3>
                 
-                <div className="mb-6">
-                  <span className="text-[10px] text-white/20 line-through block mb-1">{plan.oldPrice}</span>
-                  <span className="text-3xl font-bold text-white tracking-tighter">{plan.price}</span>
+                <div className="mb-8">
+                  <span className="text-xs text-text-secondary/50 line-through block mb-1">{plan.oldPrice}</span>
+                  <span className="text-4xl font-bold text-text-primary tracking-tighter">{plan.price}</span>
                 </div>
 
-                <p className="text-xs text-white/40 mb-8 leading-relaxed">
+                <p className="text-sm text-text-secondary mb-10 leading-relaxed font-jakarta font-medium opacity-80">
                   {plan.desc}
                 </p>
 
-                <div className="space-y-3 mb-10 flex-grow">
+                <div className="space-y-4 mb-12">
                   {plan.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
+                    <div key={idx} className="flex items-center gap-4">
                       {feature.included ? (
-                        <Check size={14} className={cn("flex-shrink-0", plan.accent)} />
+                        <div className={cn("p-1 rounded-full bg-current/10", plan.accent)}>
+                          <Check size={12} className="stroke-[3]" />
+                        </div>
                       ) : (
-                        <X size={14} className="flex-shrink-0 text-white/10" />
+                        <div className="p-1 rounded-full bg-text-secondary/10">
+                          <X size={12} className="text-text-secondary/30" />
+                        </div>
                       )}
                       <span className={cn(
-                        "text-[11px] font-jakarta tracking-wide",
-                        feature.included ? "text-white/70" : "text-white/20"
+                        "text-[12px] font-jakarta font-medium transition-colors",
+                        feature.included ? "text-text-primary/90" : "text-text-secondary/40"
                       )}>
                         {feature.text}
                       </span>
@@ -139,19 +139,18 @@ export default function Pricing() {
                   ))}
                 </div>
 
-                {/* 🚀 INSTANT CLICK BUTTON */}
                 <button 
                   type="button"
                   onClick={handleConsultClick}
                   className={cn(
-                    "group w-full py-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 border cursor-pointer active:scale-95",
+                    "group w-full py-5 rounded-2xl font-bold text-[13px] transition-all flex items-center justify-center gap-2 border cursor-pointer active:scale-95",
                     plan.highlight 
-                      ? "bg-white text-black border-white hover:bg-transparent hover:text-white" 
-                      : "bg-transparent text-white border-white/10 hover:bg-white/5"
+                      ? "bg-accent-cyan text-black border-accent-cyan hover:shadow-lg hover:shadow-accent-cyan/20" 
+                      : "bg-transparent text-text-primary border-border-subtle hover:bg-surface/50"
                   )}
                 >
                   Consult Now
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
             </motion.div>
