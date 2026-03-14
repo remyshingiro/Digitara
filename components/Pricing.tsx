@@ -78,7 +78,7 @@ export default function Pricing() {
       <div className="max-w-[1100px] mx-auto">
         <div className="mb-12">
           <h2 className="text-3xl md:text-5xl font-bold font-clash text-white tracking-tight">
-            Pricing <span className="opacity-40 italic">Tiers</span>
+            Pricing <span className="opacity-40 italic">Plans</span>
           </h2>
         </div>
 
@@ -98,7 +98,7 @@ export default function Pricing() {
             >
               {/* Badge Wrapper */}
               <div className="flex justify-between items-center mb-6">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] opacity-40">Tier_{index + 1}</span>
+                <span className="text-[13px] font-bold text-red-400 uppercase tracking-[0.2em] opacity-">Tier {index + 1}</span>
                 <div className="relative group">
                   <div className={cn("absolute inset-0 blur-md opacity-20", plan.accent.replace('text-', 'bg-'))} />
                   <div className="relative px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
