@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Added for active state tracking
+import { usePathname, useRouter } from "next/navigation"; 
 import { Menu, X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -15,13 +15,38 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname(); // Get current URL path
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // 🚀 FIXED SCROLL LOGIC
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(false); // Close mobile menu if open
+
+    const element = document.getElementById("contact");
+    if (element) {
+      // If we are on the page where #contact exists
+      const offset = 100;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    } else {
+      // If we are on a subpage, go home first then scroll
+      router.push("/#contact");
+    }
+  };
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 flex justify-center">
@@ -53,7 +78,6 @@ export default function Navbar() {
                   )}
                 >
                   {link.name}
-                  {/* Underline logic: full width if active, animate-in on hover if not */}
                   <span className={cn(
                     "absolute -bottom-1 left-0 h-[1px] bg-accent-cyan transition-all duration-300",
                     isActive ? "w-full" : "w-0 group-hover:w-full"
@@ -63,12 +87,14 @@ export default function Navbar() {
             })}
           </div>
           
-          <Link href="/contact">
-            <button className="bg-accent-cyan text-dark-bg px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:brightness-110 hover:gap-3 transition-all active:scale-95">
-              Get Quote
-              <ArrowRight size={16} />
-            </button>
-          </Link>
+          {/* 🚀 UPDATED DESKTOP BUTTON */}
+          <button 
+            onClick={handleContactClick}
+            className="bg-accent-cyan text-dark-bg px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:brightness-110 hover:gap-3 transition-all active:scale-95 cursor-pointer"
+          >
+            Start Your Project
+            <ArrowRight size={16} />
+          </button>
         </div>
 
         {/* Mobile Toggle */}
@@ -83,7 +109,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="absolute top-24 left-6 right-6 glass border border-white/10 p-8 rounded-3xl flex flex-col gap-6 md:hidden animate-in fade-in zoom-in duration-300">
+        <div className="absolute top-24 left-6 right-6 glass border border-white/10 p-8 rounded-3xl flex flex-col gap-6 md:hidden animate-in fade-in zoom-in duration-300 shadow-2xl">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -100,11 +126,14 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <Link href="/contact" onClick={() => setIsOpen(false)}>
-            <button className="w-full bg-accent-cyan text-dark-bg py-4 rounded-xl font-bold text-lg mt-4 shadow-lg shadow-accent-cyan/20">
-              Start Your Project
-            </button>
-          </Link>
+          
+          {/* 🚀 UPDATED MOBILE BUTTON */}
+          <button 
+            onClick={handleContactClick}
+            className="w-full bg-accent-cyan text-dark-bg py-5 rounded-xl font-bold text-lg mt-4 shadow-lg shadow-accent-cyan/20 active:scale-95 cursor-pointer"
+          >
+            Start Your Project
+          </button>
         </div>
       )}
     </div>
